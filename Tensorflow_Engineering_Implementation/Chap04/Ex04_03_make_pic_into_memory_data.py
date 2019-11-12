@@ -45,7 +45,7 @@ if __name__ == '__main__':
                 if coord.should_stop():
                     break
                 image_list, label_list = sess.run([image_batch, label_batch])
-                show_images(image_list, label_list)
+                show_images(image_list, label_list, image_shape=(28, 28))
         except tf.errors.OutOfRangeError:
             print("Done!")
         finally:

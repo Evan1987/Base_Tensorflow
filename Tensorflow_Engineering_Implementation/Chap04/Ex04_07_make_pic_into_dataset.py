@@ -3,13 +3,10 @@
 Using >>>tf.data.Dataset api to transform image data into `dataset`
 """
 
-import os
-import math
 import numpy as np
 import tensorflow as tf
-import matplotlib.pyplot as plt
 from _utils.utensorflow import get_session_config
-from Tensorflow_Engineering_Implementation.Chap04.utils import man_woman_path, load_man_woman_data
+from Tensorflow_Engineering_Implementation.Chap04.utils import man_woman_path, load_man_woman_data, show_images
 
 
 SIZE = [96, 96]
@@ -69,20 +66,6 @@ def parse_one(image_file: str, image_label: str):
     return image, image_label
 
 
-def plot_images(images: np.ndarray, labels: np.ndarray):
-    n_cols = 5
-    n_rows = math.ceil(len(labels) / n_cols)
-    fig, axes = plt.subplots(nrows=n_rows, ncols=n_cols, figsize=(5 * n_cols, 5 * n_rows))
-    for i, (image, label) in enumerate(zip(images, labels)):
-        r = i // n_cols
-        c = i % n_cols
-        axe: plt.Axes = axes[r, c]
-        axe.imshow(np.squeeze(image))
-        axe.axis("off")
-        axe.set_title(str(label))
-    fig.show()
-
-
 if __name__ == '__main__':
     image_files, image_labels = load_man_woman_data(man_woman_path)
     tf.reset_default_graph()
@@ -98,7 +81,7 @@ if __name__ == '__main__':
         try:
             while True:
                 image_batch, label_batch = sess.run(element)
-                plot_images(image_batch, label_batch)
+                show_images(image_batch, label_batch, n_cols=8)
 
         except tf.errors.OutOfRangeError:
             print("Read done!")
